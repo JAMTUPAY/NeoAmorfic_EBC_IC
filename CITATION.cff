@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+title: "An Entropy-Inspired Phenomenological Relation Competes with NFW on 175 SPARC Rotation Curves"
+message: "If you use this code or results, please cite the Zenodo DOI and the paper."
+authors:
+  - family-names: Tupay
+    given-names: Johann Anton Michael
+repository-code: https://github.com/JAMTUPAY/NeoAmorfic_EBC_IC
+license: MIT
+doi: ""   # fill after Zenodo minting
