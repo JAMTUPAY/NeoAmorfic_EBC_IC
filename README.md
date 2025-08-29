@@ -4,7 +4,7 @@
 
 This repository contains the full code and analysis pipeline to reproduce the results in the paper:
 
-> Tupay, J. A. M. (2025). *An Entropy-Inspired Phenomenological Relation Competes with NFW on 175 SPARC Rotation Curves under Referee-Fair, Cross-Validated Tests*. Zenodo. [https://doi.org/10.5281/zenodo.16996009](https://doi.org/10.5281/zenodo.16996009)
+> Tupay, J. A. M. (2025). *An Entropy-Inspired Phenomenological Relation Competes with NFW on 175 SPARC Rotation Curves under Referee-Fair, Cross-Validated Tests*. Zenodo. https://doi.org/10.5281/zenodo.16996009
 
 The analysis performs a head-to-head, referee-fair comparison of four models for describing galactic rotation curves on the SPARC dataset (175 galaxies).
 
@@ -48,7 +48,6 @@ Clone this repository and install the required Python packages.
 git clone [https://github.com/your-username/NeoAmorfic_EBC_IC.git](https://github.com/your-username/NeoAmorfic_EBC_IC.git)
 cd NeoAmorfic_EBC_IC
 pip install -r requirements.txt
-```
 
 2. Data Setup
 
@@ -66,37 +65,38 @@ sha256sum -c rc_parsed/sha256s.txt
 
 A single script is provided to run both tracks and generate all figures and tables.
 
-3. Running the Analysis
-
-A single script is provided to run both tracks and generate all figures and tables.
+bash run_all.sh
 
 This script will execute the main analysis script (scripts/ebc_ic_referee.py) for both Track A and Track B, followed by the plotting scripts to generate all figures. It will take some time to complete.
 
 (For advanced use, the individual commands can be found inside the run_all.sh script.)
 
-📂 Repository Structure & Outputs
-paper/: A copy of the manuscript PDF.
+```markdown
+---
 
-rc_parsed/: Directory for the input SPARC data CSVs.
+## 📂 Repository Structure & Outputs
 
-scripts/: Contains all Python scripts for analysis and plotting.
+* **`paper/`**: A copy of the manuscript PDF.
+* **`rc_parsed/`**: Directory for the input SPARC data CSVs.
+* **`scripts/`**: Contains all Python scripts for analysis and plotting.
+* **`results_trackA_dense/` & `results_trackB_dense/`**: Output directories for result tables, winner lists, and quality-control exclusion lists (`exclusions.csv`).
+* **`figs_trackA_dense/` & `figs_trackB_dense/`**: Output directories for all figures, including the CV-WRMS boxplots.
+* **`figs_m0_examples/`**: Contains the 12-panel galaxy fit overlay plots shown in the appendix.
 
-results_trackA_dense/ & results_trackB_dense/: Output directories containing result tables, winner lists, and quality-control exclusion lists (exclusions.csv).
+---
 
-figs_trackA_dense/ & figs_trackB_dense/: Output directories for all figures, including the CV-WRMS boxplots.
+## 📜 Citation
 
-figs_m0_examples/: Contains the 12-panel galaxy fit overlay plots shown in the appendix.
-
-📜 Citation
 If you use this code or the results in your research, please cite both the paper and this repository's Zenodo DOI.
 
+```bibtex
 @article{Tupay2025,
   author       = {Tupay, Johann Anton Michael},
   title        = {An Entropy-Inspired Phenomenological Relation Competes with NFW on 175 SPARC Rotation Curves under Referee-Fair, Cross-Validated Tests},
   year         = {2025},
   publisher    = {Zenodo},
   doi          = {10.5281/zenodo.16996009},
-  url          = {[https://doi.org/10.5281/zenod.16996009](https://doi.org/10.5281/zenod.16996009)}
+  url          = {[https://doi.org/10.5281/zenodo.16996009](https://doi.org/10.5281/zenodo.16996009)}
 }
 
 ⚖️ License
