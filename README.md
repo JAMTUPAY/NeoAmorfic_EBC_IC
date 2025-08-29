@@ -78,4 +78,4 @@ Python ≥3.10; packages in requirements.txt.
 
 License / Citation
 
-MIT. Please cite the Zenodo DOI (badge to be added after release) and the paper PDF in paper/.
+MIT. Please cite the Zenodo DOI 10.5281/zenodo.16996009 and the paper PDF in paper/.
