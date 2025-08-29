@@ -1,81 +1,99 @@
-# NeoAmorfic_EBC_IC — Referee-fair replication (175 SPARC rotation curves)
+# Referee-Fair Comparison of Galactic Rotation Curve Models (SPARC)
 
-This repository reproduces the two-track, referee-fair comparison in the paper:
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16996009.svg)](https://doi.org/10.5281/zenodo.16996009)
 
-> **An Entropy-Inspired Phenomenological Relation Competes with NFW on 175 SPARC Rotation Curves under Referee-Fair, Cross-Validated Tests**
+This repository contains the full code and analysis pipeline to reproduce the results in the paper:
 
-- **Track A**: NFW with **no** cosmology prior  
-- **Track B**: NFW with the **Dutton–Macciò (2014) c(M) prior** (DM14)
+> Tupay, J. A. M. (2025). *An Entropy-Inspired Phenomenological Relation Competes with NFW on 175 SPARC Rotation Curves under Referee-Fair, Cross-Validated Tests*. Zenodo. [https://doi.org/10.5281/zenodo.16996009](https://doi.org/10.5281/zenodo.16996009)
 
-**Sample & results.** 175 inputs; 165 pass QC (≥6 usable points).  
-- Track A winners: M0 62, M1 44, M2 55, M3 4; decisive: M0 45, M1 13, M2 10  
-- Track B winners: M0 62, M1 66, M2 33, M3 4; decisive: M0 46, M1 22, M2 6
-
-**Figure 1** (CV-WRMS boxplots) shows predictive accuracy (5-fold, radius-blocked CV; lower is better).  
-Figures and tables are in `figs_trackA_dense/` and `figs_trackB_dense/`. The 12-panel overlays appear in `figs_m0_examples/`.
+[cite_start]The analysis performs a head-to-head, referee-fair comparison of four models for describing galactic rotation curves on the SPARC dataset (175 galaxies)[cite: 7].
 
 ---
 
-## Reproduction (dense grids, CV=5, σ-floor=3 km/s)
+## Models Compared
+
+The comparison includes four models with strictly controlled parameter budgets:
+
+* [cite_start]**M0: EBC (2 params)**: A simple entropy-inspired power law, $V(r) = Ar^{\alpha}$[cite: 32].
+* [cite_start]**M1: Baryons + EBC (2 params)**: A composite model where the EBC component accounts for the missing velocity after considering baryons, $V^2(r) = V_{\text{bar}}^2(r) + (Ar^{\alpha})^2$[cite: 33].
+* [cite_start]**M2: Baryons + NFW (2 params)**: The standard dark matter model, combining the baryonic component with an NFW halo[cite: 34].
+* [cite_start]**M3: MOND (0 params)**: Modified Newtonian Dynamics, using the "simple" interpolation function with a fixed standard acceleration parameter $a_0$[cite: 37, 42].
+
+The comparison is run on two tracks:
+* **Track A**: A purely phenomenological test where the NFW model has **no** cosmology prior.
+* [cite_start]**Track B**: An ΛCDM-anchored test where the NFW model is constrained by the **Dutton–Macciò (2014) concentration-mass relation prior**[cite: 9].
+
+---
+
+## Key Results
+
+[cite_start]Out of 175 galaxies, 165 passed quality control (≥6 usable data points per curve)[cite: 10]. The winning model for each galaxy was determined using the Bayesian Information Criterion (BIC).
+
+| Track                   | M0 (EBC) Wins | M1 (Bar+EBC) Wins | M2 (Bar+NFW) Wins | M3 (MOND) Wins |
+| ----------------------- | :-----------: | :---------------: | :---------------: | :------------: |
+| **A (no NFW prior)** |      62       |        44         |        55         |       4        |
+| **B (DM14 NFW prior)** |      62       |        66         |        33         |       4        |
+
+[cite_start]*For a breakdown of decisive wins ($\Delta \text{BIC} > 10$), see the paper.* [cite: 12]
+
+---
+
+## ⚙️ Reproduction Guide
+
+### 1. Installation
+
+Clone this repository and install the required Python packages.
 
 ```bash
-# Track A (no NFW prior)
-python -u scripts/ebc_ic_referee.py \
-  --data rc_parsed \
-  --out  results_trackA_dense \
-  --figs figs_trackA_dense \
-  --sigma-floor 3.0 \
-  --H0 70 \
-  --cv-folds 5 \
-  --nfw-prior none
+git clone [https://github.com/your-username/NeoAmorfic_EBC_IC.git](https://github.com/your-username/NeoAmorfic_EBC_IC.git)
+cd NeoAmorfic_EBC_IC
+pip install -r requirements.txt
+2. Data Setup
 
-# Track B (DM14 c(M) prior)
-python -u scripts/ebc_ic_referee.py \
-  --data rc_parsed \
-  --out  results_trackB_dense \
-  --figs figs_trackB_dense \
-  --sigma-floor 3.0 \
-  --H0 70 \
-  --cv-folds 5 \
-  --nfw-prior dm14
-CV boxplots (Figure 1)
-python -u scripts/make_cv_boxplots.py \
-  --summary results_trackA_dense/ic_summary.csv \
-  --out     figs_trackA_dense \
-  --label   "Track A (dense)"
+The analysis relies on the SPARC galaxy data.
 
-python -u scripts/make_cv_boxplots.py \
-  --summary results_trackB_dense/ic_summary.csv \
-  --out     figs_trackB_dense \
-  --label   "Track B (dense, DM14 prior)"
-Overlay montages (Appendix)
-# Track A
-python -u scripts/plot_examples_overlay.py \
-  --data    rc_parsed \
-  --summary results_trackA_dense/ic_summary.csv \
-  --out     figs_m0_examples/trackA_dense_all \
-  --k 12 --sigma-floor 3.0 --curves all --track "Track A (dense)"
+Download the Data: Download the 175 _rotmod.csv files from the official SPARC website.
 
-# Track B (DM14 prior)
-python -u scripts/plot_examples_overlay.py \
-  --data    rc_parsed \
-  --summary results_trackB_dense/ic_summary.csv \
-  --out     figs_m0_examples/trackB_dense_all \
-  --k 12 --sigma-floor 3.0 --curves all --dm14-prior --H0 70 --track "Track B (dense)"
-QC lists: results_trackA_dense/exclusions.csv and results_trackB_dense/exclusions.csv.
+Place the Data: Move all 175 CSV files into the rc_parsed/ directory in this repository.
 
-⸻
+Verify Integrity (Optional): Run the following command to ensure all files are correct and match the versions used in the paper.
 
-Data
+Bash
+sha256sum -c rc_parsed/sha256s.txt
+3. Running the Analysis
 
-If SPARC redistribution is restricted in your jurisdiction, do not commit raw CSVs. Instead keep:
-	•	rc_parsed/sha256s.txt (checksums) and
-	•	a short “fetch” note in this README linking to SPARC.
+A single script is provided to run both tracks and generate all figures and tables.
 
-Environment
+Bash
+bash run_all.sh
+This script will execute the main analysis script (scripts/ebc_ic_referee.py) for both Track A and Track B, followed by the plotting scripts to generate all figures. It will take some time to complete.
 
-Python ≥3.10; packages in requirements.txt.
+(For advanced use, the individual commands can be found inside the run_all.sh script.)
 
-License / Citation
+📂 Repository Structure & Outputs
+paper/: A copy of the manuscript PDF.
 
-MIT. Please cite the Zenodo DOI 10.5281/zenodo.16996009 and the paper PDF in paper/.
+rc_parsed/: Directory for the input SPARC data CSVs.
+
+scripts/: Contains all Python scripts for analysis and plotting.
+
+results_trackA_dense/ & results_trackB_dense/: Output directories containing result tables, winner lists, and quality-control exclusion lists (exclusions.csv).
+
+figs_trackA_dense/ & figs_trackB_dense/: Output directories for all figures, including the CV-WRMS boxplots.
+
+figs_m0_examples/: Contains the 12-panel galaxy fit overlay plots shown in the appendix.
+
+📜 Citation
+If you use this code or the results in your research, please cite both the paper and this repository's Zenodo DOI.
+
+Code snippet
+@article{Tupay2025,
+  author       = {Tupay, Johann Anton Michael},
+  title        = {An Entropy-Inspired Phenomenological Relation Competes with NFW on 175 SPARC Rotation Curves under Referee-Fair, Cross-Validated Tests},
+  year         = {2025},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.16996009},
+  url          = {[https://doi.org/10.5281/zenodo.16996009](https://doi.org/10.5281/zenodo.16996009)}
+}
+⚖️ License
+This project is licensed under the MIT License.
